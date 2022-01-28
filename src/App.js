@@ -14,13 +14,13 @@ import { Canvas } from "@react-three/fiber";
 
 import Avatar5 from "./components/Avatar5";
 
-import Gallery from "./scenes/Gallery";
-
+//loader function for suspense
 function Loader() {
   const { progress } = useProgress();
   return <Html center>{progress} % loaded</Html>;
 }
 
+//cube for teleport icon
 function Cube(props) {
   return (
     <mesh {...props}>
@@ -30,15 +30,17 @@ function Cube(props) {
   );
 }
 
+//floor creates a mesh that can be traversed with teleport
 function Floor(props) {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} {...props}>
-      <planeBufferGeometry args={[30, 30]} attach="geometry" />
+      <planeBufferGeometry args={[20, 20]} attach="geometry" />
       <meshStandardMaterial attach="material" color={"white"} />
     </mesh>
   );
 }
 
+//toggle the VR state to switch between edit mode and a live VR session
 function App() {
   const [VR, setVR] = useState(true);
   return (
@@ -49,7 +51,6 @@ function App() {
             <Suspense fallback={<Loader />}>
               <Sky />
               <Avatar5 scale={[0.6, 0.6, 0.6]} />
-              <Gallery />
               <ambientLight intensity={0.9} />
             </Suspense>
           </Canvas>
@@ -58,7 +59,6 @@ function App() {
           <VRCanvas>
             <Suspense fallback={<Loader />}>
               <Sky />
-              <Gallery />
               <ambientLight intensity={0.9} />
               <TeleportTravel useNormal={true} Indicator={Cube}>
                 <Floor position={[0, -0.2, 0]} />
